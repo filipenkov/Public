@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response
 boolean isUserInProjectRole(String username, String projectRoleName, String projectKey){
     boolean result = false
     try{
-		ApplicationUser user = ComponentAccessor.getUserManager().getUserByName(username)
+	ApplicationUser user = ComponentAccessor.getUserManager().getUserByName(username)
         ProjectRoleManager projectRoleManager = ComponentAccessor.getComponent(ProjectRoleManager)
         ProjectRole projectRole = projectRoleManager.getProjectRole(projectRoleName)
         Project project = ComponentAccessor.getProjectManager().getProjectObjByKey(projectKey)
@@ -28,6 +28,6 @@ isUserInProjectRole(httpMethod: "GET") { MultivaluedMap queryParams ->
     String username = queryParams.getFirst("username")
     String projectRoleName = queryParams.getFirst("projectRoleName")
     String projectKey = queryParams.getFirst("projectKey")
-	boolean result = isUserInProjectRole(username, projectRoleName, projectKey)
+    boolean result = isUserInProjectRole(username, projectRoleName, projectKey)
     return Response.ok(new JsonBuilder(result).toString()).build();
 }
