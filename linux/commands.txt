@@ -1,0 +1,9 @@
+# grab sertificate
+openssl s_client -connect hooks.bitrise.io:443 -servername hooks.bitrise.io:443 < /dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > hooks.bitrise.io.crt
+# add to java storage
+/usr/stash/bin/jdk1.8.0_161/jre/bin/keytool -importcert -alias hooks.bitrise.io -keystore /opt/stash/.keystore -file hooks.bitrise.io.crt
+# verify connection
+/usr/stash/bin/jdk1.8.0_161/jre/bin/java -Djavax.net.ssl.trustStore=/opt/stash/.keystore /opt/stash/SSLPoke hooks.bitrise.io 443
+
+# get connections count
+sudo netstat -aptn | grep apache | awk '{print $5" "$6}' | sort | uniq -c | sort -n
